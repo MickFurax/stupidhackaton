@@ -5,9 +5,9 @@ const Home = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-12">
-        <div className="text-6xl mb-4">🚽</div>
+        <div className="text-6xl mb-4"><img src="/logo.png" alt="" className="w-40 h-40 mx-auto" /></div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Bienvenue sur Toilet Tracker
+          Bienvenue sur E-caca
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
           L'application ultime pour noter et partager vos expériences dans les toilettes ! 

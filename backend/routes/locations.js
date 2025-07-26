@@ -93,7 +93,9 @@ router.post('/', upload.single('image'), async (req, res) => {
       type,
       dangerRating,
       description,
-      locationRating
+      locationRating,
+      latitude,
+      longitude
     } = req.body;
 
     // Validate required fields
@@ -112,6 +114,20 @@ router.post('/', upload.single('image'), async (req, res) => {
       description: description.trim(),
       locationRating: parseInt(locationRating)
     };
+
+    // Add coordinates if provided
+    if (latitude && longitude) {
+      const lat = parseFloat(latitude);
+      const lng = parseFloat(longitude);
+      
+      // Validate coordinates
+      if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+        locationData.coordinates = {
+          latitude: lat,
+          longitude: lng
+        };
+      }
+    }
 
     // Add image path if uploaded
     if (req.file) {

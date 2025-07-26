@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StarRating from '../components/StarRating'
+import { getCurrentLocation, openInGoogleMaps } from '../utils/maps'
 import axios from 'axios'
 
 const AddLocation = () => {
@@ -15,8 +16,11 @@ const AddLocation = () => {
     dangerRating: 0,
     image: null,
     description: '',
-    locationRating: 0
+    locationRating: 0,
+    latitude: '',
+    longitude: ''
   })
+  const [gettingLocation, setGettingLocation] = useState(false)
 
   const toiletTypes = [
     'WC Publique',
@@ -66,6 +70,42 @@ const AddLocation = () => {
     }))
   }
 
+  const handleGetCurrentLocation = async () => {
+    setGettingLocation(true)
+    setError('')
+
+    try {
+      const coords = await getCurrentLocation()
+      setFormData(prev => ({
+        ...prev,
+        latitude: coords.latitude.toString(),
+        longitude: coords.longitude.toString()
+      }))
+    } catch (error) {
+      let errorMessage = 'Erreur lors de la récupération de votre position'
+      if (error.message.includes('denied')) {
+        errorMessage = 'Accès à la géolocalisation refusé'
+      } else if (error.message.includes('unavailable')) {
+        errorMessage = 'Position non disponible'
+      } else if (error.message.includes('timeout')) {
+        errorMessage = 'Timeout lors de la récupération de la position'
+      }
+      setError(errorMessage)
+    } finally {
+      setGettingLocation(false)
+    }
+  }
+
+  const handleOpenInGoogleMaps = () => {
+    if (formData.latitude && formData.longitude) {
+      openInGoogleMaps(
+        parseFloat(formData.latitude),
+        parseFloat(formData.longitude),
+        formData.location
+      )
+    }
+  }
+
   const validateForm = () => {
     if (!formData.location.trim()) {
       setError('L\'endroit est requis')
@@ -107,6 +147,13 @@ const AddLocation = () => {
       submitData.append('dangerRating', formData.dangerRating)
       submitData.append('description', formData.description)
       submitData.append('locationRating', formData.locationRating)
+      
+      if (formData.latitude) {
+        submitData.append('latitude', formData.latitude)
+      }
+      if (formData.longitude) {
+        submitData.append('longitude', formData.longitude)
+      }
       
       if (formData.image) {
         submitData.append('image', formData.image)
@@ -220,6 +267,68 @@ const AddLocation = () => {
                   alt="Aperçu"
                   className="max-w-xs h-32 object-cover rounded-md border"
                 />
+              </div>
+            )}
+          </div>
+
+          {/* Coordinates Section */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700">
+                Coordonnées GPS (optionnel)
+              </label>
+              <button
+                type="button"
+                onClick={handleGetCurrentLocation}
+                disabled={gettingLocation}
+                className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-md transition-colors duration-200 disabled:opacity-50"
+              >
+                {gettingLocation ? 'Localisation...' : '📍 Ma position'}
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="latitude" className="block text-sm font-medium text-gray-600 mb-1">
+                  Latitude
+                </label>
+                <input
+                  type="number"
+                  id="latitude"
+                  name="latitude"
+                  value={formData.latitude}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  placeholder="Ex: 48.8566"
+                  step="any"
+                />
+              </div>
+              <div>
+                <label htmlFor="longitude" className="block text-sm font-medium text-gray-600 mb-1">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  id="longitude"
+                  name="longitude"
+                  value={formData.longitude}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  placeholder="Ex: 2.3522"
+                  step="any"
+                />
+              </div>
+            </div>
+            
+            {formData.latitude && formData.longitude && (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleOpenInGoogleMaps}
+                  className="text-sm bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-md transition-colors duration-200"
+                >
+                  🗺️ Voir sur Google Maps
+                </button>
               </div>
             )}
           </div>

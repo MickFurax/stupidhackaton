@@ -14,8 +14,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="text-2xl">🚽</div>
-              <span className="text-xl font-bold text-primary-600">Toilet Tracker</span>
+              <div className="text-2xl"><img src="/logo.png" alt="" className="h-10 w-10" /></div>
+              <span className="text-xl font-bold text-primary-500">E-caca</span>
             </Link>
           </div>
           
@@ -24,7 +24,7 @@ const Navbar = () => {
               to="/"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 isActive('/') 
-                  ? 'bg-primary-100 text-primary-700' 
+                  ? ' border-b-4 border-b-primary-500 text-primary-700' 
                   : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
               }`}
             >
@@ -35,7 +35,7 @@ const Navbar = () => {
               to="/add"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 isActive('/add') 
-                  ? 'bg-primary-100 text-primary-700' 
+                  ? 'border-b-4 border-b-primary-500 text-primary-700' 
                   : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
               }`}
             >
@@ -46,7 +46,7 @@ const Navbar = () => {
               to="/history"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                 isActive('/history') 
-                  ? 'bg-primary-100 text-primary-700' 
+                  ? 'border-b-4 border-b-primary-500 text-primary-700' 
                   : 'text-gray-600 hover:text-primary-600 hover:bg-gray-100'
               }`}
             >

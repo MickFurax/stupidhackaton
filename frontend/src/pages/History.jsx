@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import StarRating from '../components/StarRating'
+import { openInGoogleMaps, formatCoordinates, areValidCoordinates, getDirectionsUrl } from '../utils/maps'
 import axios from 'axios'
+
 
 const History = () => {
   const [locations, setLocations] = useState([])
@@ -88,13 +90,21 @@ const History = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          📋 Historique des endroits
-        </h1>
-        <p className="text-gray-600">
-          Découvrez tous les endroits notés par la communauté
-        </p>
+      <div className="flex justify-between items-center">
+        <div className="">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            📋 Historique des endroits
+          </h1>
+          <p className="text-gray-600">
+            Découvrez tous les endroits notés par la communauté
+          </p>
+        </div>
+        {/* Add new location button */}
+        <div className="text-center">
+          <Link to="/add" className="btn-primary">
+          💩 Ajouter un nouvel endroit
+          </Link>
+        </div>
       </div>
 
       {locations.length === 0 ? (
@@ -180,6 +190,38 @@ const History = () => {
                     </p>
                   </div>
 
+                  {/* Coordinates and Maps */}
+                  {location.coordinates && areValidCoordinates(location.coordinates.latitude, location.coordinates.longitude) && (
+                    <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                      <div className="mb-2">
+                        <span className="text-xs font-medium text-gray-700 block mb-1">Coordonnées GPS:</span>
+                        <span className="text-xs text-gray-600 font-mono">
+                          {formatCoordinates(location.coordinates.latitude, location.coordinates.longitude, 4)}
+                        </span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => openInGoogleMaps(
+                            location.coordinates.latitude,
+                            location.coordinates.longitude,
+                            location.location
+                          )}
+                          className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded transition-colors duration-200"
+                        >
+                          🗺️ Voir sur Maps
+                        </button>
+                        <a
+                          href={getDirectionsUrl(location.coordinates.latitude, location.coordinates.longitude)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded transition-colors duration-200 inline-block"
+                        >
+                          🧭 Itinéraire
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Date */}
                   <div className="text-xs text-gray-500 border-t pt-3">
                     Ajouté le {formatDate(location.createdAt)}
@@ -189,12 +231,7 @@ const History = () => {
             ))}
           </div>
 
-          {/* Add new location button */}
-          <div className="text-center mt-12">
-            <Link to="/add" className="btn-primary">
-              🚽 Ajouter un nouvel endroit
-            </Link>
-          </div>
+          
         </>
       )}
     </div>

@@ -34,6 +34,20 @@ const locationSchema = new mongoose.Schema({
     required: [true, 'Location rating is required'],
     min: [1, 'Location rating must be at least 1'],
     max: [5, 'Location rating must be at most 5']
+  },
+  coordinates: {
+    latitude: {
+      type: Number,
+      required: false,
+      min: [-90, 'Latitude must be between -90 and 90'],
+      max: [90, 'Latitude must be between -90 and 90']
+    },
+    longitude: {
+      type: Number,
+      required: false,
+      min: [-180, 'Longitude must be between -180 and 180'],
+      max: [180, 'Longitude must be between -180 and 180']
+    }
   }
 }, {
   timestamps: true
