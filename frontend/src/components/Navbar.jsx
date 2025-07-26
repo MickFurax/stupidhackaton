@@ -15,7 +15,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <div className="text-2xl"><img src="/logo.png" alt="" className="h-10 w-10" /></div>
-              <span className="text-xl font-bold text-primary-500">E-caca</span>
+              <span className="text-xl font-bold text-primary-500">Ankalamanjana</span>
             </Link>
           </div>
           

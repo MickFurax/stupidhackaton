@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Clipboard, Zap, Building2, Map, Navigation, Trees, Home, Coffee, Waves, HelpCircle } from 'lucide-react'
 import StarRating from '../components/StarRating'
 import { openInGoogleMaps, formatCoordinates, areValidCoordinates, getDirectionsUrl } from '../utils/maps'
 import axios from 'axios'
@@ -37,16 +38,16 @@ const History = () => {
     })
   }
 
-  const getTypeEmoji = (type) => {
-    const emojiMap = {
-      'WC Publique': '🏢',
-      'Dans la nature': '🌳',
-      'Chez quelqu\'un': '🏠',
-      'Poto': '🍺',
-      'Canal': '🚤',
-      'Autre': '❓'
+  const getTypeIcon = (type) => {
+    const iconMap = {
+      'WC Publique': <Building2 className="w-5 h-5" />,
+      'Dans la nature': <Trees className="w-5 h-5" />,
+      'Chez quelqu\'un': <Home className="w-5 h-5" />,
+      'Poteau': <Coffee className="w-5 h-5" />,
+      'Canal': <Waves className="w-5 h-5" />,
+      'Autre': <HelpCircle className="w-5 h-5" />
     }
-    return emojiMap[type] || '❓'
+    return iconMap[type] || <HelpCircle className="w-5 h-5" />
   }
 
   const getDangerColor = (rating) => {
@@ -92,8 +93,9 @@ const History = () => {
     <div className="max-w-6xl mx-auto">
       <div className="flex justify-between items-center">
         <div className="">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            📋 Historique des endroits
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <Clipboard className="w-8 h-8" />
+            Historique des endroits
           </h1>
           <p className="text-gray-600">
             Découvrez tous les endroits notés par la communauté
@@ -101,15 +103,18 @@ const History = () => {
         </div>
         {/* Add new location button */}
         <div className="text-center">
-          <Link to="/add" className="btn-primary">
-          💩 Ajouter un nouvel endroit
+          <Link to="/add" className="btn-primary flex items-center gap-2">
+            <Zap className="w-5 h-5" />
+            Ajouter un nouvel endroit
           </Link>
         </div>
       </div>
 
       {locations.length === 0 ? (
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">🚽</div>
+          <div className="mb-4 flex justify-center">
+            <Building2 className="w-16 h-16 text-gray-400" />
+          </div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             Aucun endroit pour le moment
           </h2>
@@ -149,7 +154,7 @@ const History = () => {
                       {location.location}
                     </h3>
                     <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <span className="text-lg">{getTypeEmoji(location.type)}</span>
+                      {getTypeIcon(location.type)}
                       <span>{location.type}</span>
                     </div>
                   </div>
@@ -206,17 +211,19 @@ const History = () => {
                             location.coordinates.longitude,
                             location.location
                           )}
-                          className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded transition-colors duration-200"
+                          className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded transition-colors duration-200 flex items-center gap-1"
                         >
-                          🗺️ Voir sur Maps
+                          <Map className="w-3 h-3" />
+                          Voir sur Maps
                         </button>
                         <a
                           href={getDirectionsUrl(location.coordinates.latitude, location.coordinates.longitude)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded transition-colors duration-200 inline-block"
+                          className="text-xs bg-green-100 hover:bg-green-200 text-green-700 px-2 py-1 rounded transition-colors duration-200 inline-flex items-center gap-1"
                         >
-                          🧭 Itinéraire
+                          <Navigation className="w-3 h-3" />
+                          Itinéraire
                         </a>
                       </div>
                     </div>

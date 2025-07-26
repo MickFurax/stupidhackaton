@@ -10,8 +10,8 @@ const locationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Type is required'],
     enum: {
-      values: ['WC Publique', 'Dans la nature', 'Chez quelqu\'un', 'Poto', 'Canal', 'Autre'],
-      message: 'Type must be one of: WC Publique, Dans la nature, Chez quelqu\'un, Poto, Canal, Autre'
+      values: ['WC Publique', 'Toilette normale','Dans la nature', 'Chez quelqu\'un', 'Poteau', 'Canal', 'Autre'],
+      message: 'Type must be one of: WC Publique, Dans la nature, Chez quelqu\'un, Poteau, Canal, Autre'
     }
   },
   dangerRating: {

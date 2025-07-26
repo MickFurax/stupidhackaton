@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Building2, MapPin, Map } from 'lucide-react'
 import StarRating from '../components/StarRating'
 import { getCurrentLocation, openInGoogleMaps } from '../utils/maps'
 import axios from 'axios'
@@ -26,7 +27,7 @@ const AddLocation = () => {
     'WC Publique',
     'Dans la nature', 
     'Chez quelqu\'un',
-    'Poto',
+    'Poteau',
     'Canal',
     'Autre'
   ]
@@ -186,8 +187,9 @@ const AddLocation = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          🚽 Ajouter un nouvel endroit
+        <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+          <Building2 className="w-8 h-8" />
+          Ajouter un nouvel endroit
         </h1>
         <p className="text-gray-600">
           Partagez votre expérience et aidez la communauté !
@@ -283,7 +285,12 @@ const AddLocation = () => {
                 disabled={gettingLocation}
                 className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-md transition-colors duration-200 disabled:opacity-50"
               >
-                {gettingLocation ? 'Localisation...' : '📍 Ma position'}
+                {gettingLocation ? 'Localisation...' : (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4" />
+                    Ma position
+                  </span>
+                )}
               </button>
             </div>
             
@@ -325,9 +332,10 @@ const AddLocation = () => {
                 <button
                   type="button"
                   onClick={handleOpenInGoogleMaps}
-                  className="text-sm bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-md transition-colors duration-200"
+                  className="text-sm bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-md transition-colors duration-200 flex items-center gap-2"
                 >
-                  🗺️ Voir sur Google Maps
+                  <Map className="w-4 h-4" />
+                  Voir sur Google Maps
                 </button>
               </div>
             )}
